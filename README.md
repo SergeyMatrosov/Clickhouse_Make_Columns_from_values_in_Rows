@@ -2,41 +2,34 @@
 ```
 SELECT userid,
        arrayJoin(campaign) AS campaign,
-       arrayJoin(term) AS term
+       arrayJoin(medium) AS medium
 FROM
   (SELECT userid,
           groupArray(campaign) AS campaign,
-          groupArray(term) AS term
+          groupArray(medium) AS medium
    FROM
      (SELECT userid,
              CASE
-                 WHEN property='utm_campaign' THEN name
+                 WHEN name='utm_campaign' THEN value
                  ELSE NULL
              END AS campaign,
              CASE
-                 WHEN property='utm_term' THEN name
+                 WHEN name='utm_medium' THEN value
                  ELSE NULL
-             END AS term
+             END AS medium
       FROM
-        (WITH '111' AS userid,
-              'utm_campaign' AS property,
-              'abra-cadabra' AS name SELECT userid,
-                                            property,
-                                            name
-         UNION ALL WITH '111' AS userid,
-                        'utm_term' AS property,
-                        'hui' AS name SELECT userid,
-                                             property,
-                                             name
-         UNION ALL WITH '222' AS userid,
-                        'utm_campaign' AS property,
-                        'abra-cadabra' AS name SELECT userid,
-                                                      property,
-                                                      name
-         UNION ALL WITH '222' AS userid,
-                        'utm_term' AS property,
-                        'hui' AS name SELECT userid,
-                                             property,
-                                             name))
+        (WITH '111' AS userid, 'utm_campaign' AS name, 'Search_Google' AS value 
+         SELECT userid, name, value
+        
+         UNION ALL 
+         WITH '111' AS userid, 'utm_medium' AS name, 'cpc' AS value 
+         SELECT userid, name, value
+         
+         UNION ALL 
+         WITH '222' AS userid, 'utm_campaign' AS name, 'Facebook' AS value 
+         SELECT userid, name, value
+         
+         UNION ALL WITH '222' AS userid, 'utm_medium' AS name,'cpc' AS value 
+         SELECT userid, name, value))
    GROUP BY userid)
 ```
