@@ -1,4 +1,4 @@
-```
+```sql
 SELECT userid,
        arrayJoin(campaign) AS campaign,
        arrayJoin(medium) AS medium
