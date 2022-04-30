@@ -1,4 +1,5 @@
 ```sql
+--Clickhouse
 SELECT userid,
        arrayJoin(source) AS source,
        arrayJoin(campaign) AS campaign,
